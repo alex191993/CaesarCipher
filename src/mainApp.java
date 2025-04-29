@@ -19,6 +19,7 @@ public class mainApp {
             int key;
             String pathInput;
             String pathOutput;
+            String pathExample;
             Validator check = new Validator();
             Cipher cipher = new Cipher();
             int alhabetLength = cipher.getAlhabet().length - 1;
@@ -82,8 +83,31 @@ public class mainApp {
                             }
                             decryptFile(pathOutput, key);
                         }
-                        if (choice2.equals("2"))
-                            System.out.println("Раздел в разработке, выберите другой" + '\n');
+                        if (choice2.equals("2")){
+                            while (true) {
+                                System.out.println('\n' + "Введите путь файла, который требуется взломать: ");
+                                String path = scanner.nextLine();
+                                try {
+                                    check.isFileExists(path);
+                                    pathOutput = path;
+                                    break;
+                                } catch (RuntimeException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            while (true) {
+                                System.out.println('\n' + "Введите путь файла для примера взлома: ");
+                                String path = scanner.nextLine();
+                                try {
+                                    check.isFileExists(path);
+                                    pathExample = path;
+                                    break;
+                                } catch (RuntimeException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                            }
+                            decryptFileBrutForce(pathOutput, pathExample);
+                        }
                         if (choice2.equals("3"))
                             System.out.println("Раздел в разработке, выберите другой" + '\n');
                         if (choice2.equals("4"))
@@ -129,6 +153,22 @@ public class mainApp {
         finishText("Decrypt");
     }
 
+    public static void decryptFileBrutForce(String pathToBrut, String originalPathFileExample) throws IOException {
+        FileManager file = new FileManager();
+        try {
+            List<String> textInput = file.readFile(pathToBrut);
+            List<String> textInputExample = file.readFile(originalPathFileExample);
+            String example = textInputExample.get(0);
+            Cipher fileCipher = new Cipher();
+            List<String> textOutput = fileCipher.decryptBrutForce(textInput, example);
+            file.writeFile(textOutput, "DecryptedByBrut.txt");
+        } catch (FileIsEmpty e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+        finishText("Brutforce");
+    }
+
     private static void displayMenuFirst(){
         System.out.println("Выберите действие:");
         System.out.println("""
@@ -155,6 +195,8 @@ public class mainApp {
                     System.out.println("Шифрование выполнено успешно :)");
             case "Decrypt" ->
                     System.out.println("Расшифровка выполнена успешно :)");
+            case "Brutforce" ->
+                    System.out.println("Взломано ^^");
         }
         System.out.println("=================================================" + '\n');
     }
