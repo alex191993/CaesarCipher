@@ -28,8 +28,7 @@ public class mainApp {
                 // В меню выбрали шифрование. Работаем с шифрованием: указываем какой файл шифруем, по какому ключу
                 if (choice.equals("1")){
                     while(true){
-                        System.out.println();
-                        System.out.println("Введите путь файла, который требуется зашифровать: ");
+                        System.out.println('\n' + "Введите путь файла, который требуется зашифровать: ");
                         String path = scanner.nextLine();
                         try {
                             check.isFileExists(path);
@@ -41,8 +40,7 @@ public class mainApp {
                     }
                     //Условия для выбора корректного ключа для русского алфавита - 33.
                     while (true){
-                        System.out.println();
-                        System.out.println("Введите ключ шифрования от 1 до " + alhabetLength + ": ");
+                        System.out.println('\n' + "Введите ключ шифрования от 1 до " + alhabetLength + ": ");
                         String keyString = scanner.nextLine();
                         try {
                             check.isValidKey(Integer.parseInt(keyString), cipher.getAlhabet());
@@ -55,37 +53,42 @@ public class mainApp {
                     encryptFile(pathInput, key); //вызываем метод шифрования
                 }
                 if (choice.equals("2")) {
-                    displayMenuEncryptOptions();
-                    String choice2 = scanner.nextLine();
-                    if (choice2.equals("1")) {
-                        while(true){
-                            System.out.println();
-                            System.out.println("Введите путь файла, который требуется расшифровать: ");
-                            String path = scanner.nextLine();
-                            try {
-                                check.isFileExists(path);
-                                pathOutput = path;
-                                break;
-                            }catch (RuntimeException e){
-                                System.out.println(e.getMessage());
+                    while (true) {
+                        displayMenuEncryptOptions();
+                        String choice2 = scanner.nextLine();
+
+                        if (choice2.equals("1")) {
+                            while (true) {
+                                System.out.println('\n' + "Введите путь файла, который требуется расшифровать: ");
+                                String path = scanner.nextLine();
+                                try {
+                                    check.isFileExists(path);
+                                    pathOutput = path;
+                                    break;
+                                } catch (RuntimeException e) {
+                                    System.out.println(e.getMessage());
+                                }
                             }
-                        }
-                        while (true) {
-                            System.out.println();
-                            System.out.println("Введите ключ шифрования от 1 до " + alhabetLength + ": ");
-                            String keyString = scanner.nextLine();
-                            try {
-                                check.isValidKey(Integer.parseInt(keyString), cipher.getAlhabet());
-                                key = Integer.parseInt(keyString);
-                                break;
-                            } catch (RuntimeException e) {
-                                System.out.println(e.getMessage());
+                            while (true) {
+                                System.out.println('\n' + "Введите ключ шифрования от 1 до " + alhabetLength + ": ");
+                                String keyString = scanner.nextLine();
+                                try {
+                                    check.isValidKey(Integer.parseInt(keyString), cipher.getAlhabet());
+                                    key = Integer.parseInt(keyString);
+                                    break;
+                                } catch (RuntimeException e) {
+                                    System.out.println(e.getMessage());
+                                }
                             }
+                            decryptFile(pathOutput, key);
                         }
-                        decryptFile(pathOutput, key);
+                        if (choice2.equals("2"))
+                            System.out.println("Раздел в разработке, выберите другой" + '\n');
+                        if (choice2.equals("3"))
+                            System.out.println("Раздел в разработке, выберите другой" + '\n');
+                        if (choice2.equals("4"))
+                            break;
                     }
-                    if (choice2.equals("4"))
-                        continue;
                 }
                 if (choice.equals("3")){
                     System.out.println("Заходи в следующий раз!");
@@ -135,9 +138,9 @@ public class mainApp {
                 """);
     }
     private static void displayMenuEncryptOptions(){
-        System.out.println("Выберите действие:");
+        System.out.println("Выберите действие:" + '\n');
         System.out.println("""
-                Какий образом расшифровать файл?
+                Каким образом расшифровать файл?
                 1. По ключу
                 2. Брут форсом
                 3. Статистический анализ (в разработке)
@@ -146,15 +149,13 @@ public class mainApp {
 
     }
     private static void finishText(String type){
-        System.out.println();
-        System.out.println("=================================================");
+        System.out.println('\n' + "=================================================");
         switch (type){
             case "Encrypt" ->
                     System.out.println("Шифрование выполнено успешно :)");
             case "Decrypt" ->
                     System.out.println("Расшифровка выполнена успешно :)");
         }
-        System.out.println("=================================================");
-        System.out.println();
+        System.out.println("=================================================" + '\n');
     }
 }
