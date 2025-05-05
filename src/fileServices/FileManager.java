@@ -1,9 +1,9 @@
+package fileServices;
+
 import exceptions.FileIsEmpty;
-import exceptions.FileIsNotFound;
 import validations.Validator;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.nio.file.Paths;
 import java.io.IOException;
 import java.nio.file.Files;

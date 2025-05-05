@@ -1,20 +1,15 @@
 import exceptions.FileIsEmpty;
+import fileServices.FileManager;
 import services.Cipher;
 import validations.Validator;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 
-public class mainApp {
+public class MainApp {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
-
-
-        /**
-         * Цикл для вызова меню. Меню состоит из двух уровней:
-         * 1. Общий уровень
-         * 2. Уровень выбора варианта шифрования**/
         try {
             int key;
             String pathInput;
@@ -130,7 +125,7 @@ public class mainApp {
         try {
             List<String> textInput = file.readFile(path);
             Cipher fileCipher = new Cipher();
-            List<String> textOutput = fileCipher.encrypt(textInput, key);
+            List<String> textOutput = fileCipher.encryptNew(textInput, key);
             file.writeFile(textOutput, "Encrypted.txt");
         }catch (FileIsEmpty e){
             System.out.println(e.getMessage());
@@ -144,7 +139,7 @@ public class mainApp {
         try {
             List<String> textInput = file.readFile(path);
             Cipher fileCipher = new Cipher();
-            List<String> textOutput = fileCipher.decrypt(textInput, key);
+            List<String> textOutput = fileCipher.decryptNew(textInput, key);
             file.writeFile(textOutput, "Decrypted.txt");
         }catch (FileIsEmpty e){
             System.out.println(e.getMessage());
@@ -160,7 +155,7 @@ public class mainApp {
             List<String> textInputExample = file.readFile(originalPathFileExample);
             String example = textInputExample.get(0);
             Cipher fileCipher = new Cipher();
-            List<String> textOutput = fileCipher.decryptBrutForce(textInput, example);
+            List<String> textOutput = fileCipher.decryptBrutForceNew(textInput, example);
             file.writeFile(textOutput, "DecryptedByBrut.txt");
         } catch (FileIsEmpty e) {
             System.out.println(e.getMessage());
@@ -170,7 +165,7 @@ public class mainApp {
     }
 
     private static void displayMenuFirst(){
-        System.out.println("Выберите действие:");
+        System.out.println('\n' +"Выберите действие:");
         System.out.println("""
                 1. Зашифровать файл
                 2. Расшифровать файл
@@ -178,7 +173,7 @@ public class mainApp {
                 """);
     }
     private static void displayMenuEncryptOptions(){
-        System.out.println("Выберите действие:" + '\n');
+        System.out.println('\n' +"Выберите действие:" + '\n');
         System.out.println("""
                 Каким образом расшифровать файл?
                 1. По ключу
